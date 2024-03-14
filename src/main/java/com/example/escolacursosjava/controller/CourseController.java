@@ -56,7 +56,7 @@ public class CourseController {
         return courseRepository.findById(id)
                 .map(record -> {
                     courseRepository.deleteById(id);
-                    return ResponseEntity.noContent().build();
+                    return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
