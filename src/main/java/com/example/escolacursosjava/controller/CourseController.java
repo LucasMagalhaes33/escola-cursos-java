@@ -1,6 +1,6 @@
 package com.example.escolacursosjava.controller;
 
-import com.example.escolacursosjava.model.Course;
+import com.example.escolacursosjava.dto.CourseDTO;
 import com.example.escolacursosjava.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,23 +22,23 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping
-    public List<Course> list() {
+    public List<CourseDTO> list() {
         return courseService.list();
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Course create(@RequestBody @Valid Course course){
+    public CourseDTO create(@RequestBody @Valid CourseDTO course){
         return courseService.create(course);
     }
 
     @GetMapping("/{id}")
-    public Course findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable Long id, @RequestBody @Valid Course course) {
+    public CourseDTO update(@PathVariable Long id, @RequestBody @Valid CourseDTO course) {
         return courseService.update(id, course);
     }
 
