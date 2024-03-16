@@ -2,6 +2,7 @@ package com.example.escolacursosjava.service;
 
 import com.example.escolacursosjava.dto.CourseDTO;
 import com.example.escolacursosjava.dto.mapper.CourseMapper;
+import com.example.escolacursosjava.enums.Category;
 import com.example.escolacursosjava.exception.RecordNotFoundException;
 import com.example.escolacursosjava.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class CourseService {
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.name());
-                    recordFound.setCategory(course.category());
+                    recordFound.setCategory(Category.FRONT_END);
                     return  courseMapper.toDTO(courseRepository.save(recordFound));
                 })
                 .orElseThrow(() -> new RecordNotFoundException(id));

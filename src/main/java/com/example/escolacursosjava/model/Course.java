@@ -1,5 +1,7 @@
 package com.example.escolacursosjava.model;
 
+import com.example.escolacursosjava.enums.Category;
+import com.example.escolacursosjava.enums.converters.CategoryConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -31,10 +33,9 @@ public class Course {
     private String name;
 
     @NotNull
-    @Length(max = 10)
-    @Pattern(regexp = "Back-end|Front-end")
-    @Column(length = 15, nullable = false)
-    private String category;
+    @Column(length = 10, nullable = false)
+    @Convert(converter = CategoryConverter.class)
+    private Category category;
 
     @NotNull
     @Length(max = 10)
