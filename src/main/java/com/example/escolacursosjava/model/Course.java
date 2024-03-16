@@ -1,7 +1,9 @@
 package com.example.escolacursosjava.model;
 
 import com.example.escolacursosjava.enums.Category;
+import com.example.escolacursosjava.enums.Status;
 import com.example.escolacursosjava.enums.converters.CategoryConverter;
+import com.example.escolacursosjava.enums.converters.StatusConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -38,9 +40,8 @@ public class Course {
     private Category category;
 
     @NotNull
-    @Length(max = 10)
-    @Pattern(regexp = "Ativo|Inativo")
     @Column(length = 15, nullable = false)
-    private String status = "Ativo";
+    @Convert(converter = StatusConverter.class)
+    private Status status = Status.ACTIVE;
 
 }
