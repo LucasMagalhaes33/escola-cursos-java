@@ -4,6 +4,7 @@ import com.example.escolacursosjava.dto.CourseDTO;
 import com.example.escolacursosjava.dto.LessonDTO;
 import com.example.escolacursosjava.enums.Category;
 import com.example.escolacursosjava.model.Course;
+import com.example.escolacursosjava.model.Lesson;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -37,6 +38,17 @@ public class CourseMapper {
         }
         course.setName(courseDTO.name());
         course.setCategory(convertCategoryValue(courseDTO.category()));
+
+        var lessons = courseDTO.lessons().stream().map(lessonDTO -> {
+            var lesson = new Lesson();
+            lesson.setId(lessonDTO.id());
+            lesson.setName(lessonDTO.name());
+            lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
+            lesson.setCourse(course);
+            return lesson;
+        }).toList();
+        course.setLessons(lessons);
+
         return course;
     }
 

@@ -3,6 +3,7 @@ package com.example.escolacursosjava.service;
 import com.example.escolacursosjava.dto.CourseDTO;
 import com.example.escolacursosjava.dto.mapper.CourseMapper;
 import com.example.escolacursosjava.exception.RecordNotFoundException;
+import com.example.escolacursosjava.model.Course;
 import com.example.escolacursosjava.repository.CourseRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -31,17 +32,19 @@ public class CourseService {
                 .map(courseMapper::toDTO)
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
-    public CourseDTO create(@Valid CourseDTO course){
-        return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
+    public CourseDTO create(@Valid CourseDTO courseDTO){
+        return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(courseDTO)));
     }
-    public CourseDTO update(@NotNull @Positive Long id, @Valid CourseDTO course) {
+    public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO courseDTO) {
         return courseRepository.findById(id)
                 .map(recordFound -> {
-                    recordFound.setName(course.name());
-                    recordFound.setCategory(courseMapper.convertCategoryValue(course.category()));
-                    return  courseMapper.toDTO(courseRepository.save(recordFound));
-                })
-                .orElseThrow(() -> new RecordNotFoundException(id));
+                    Course course = courseMapper.toEntity(courseDTO);
+                    recordFound.setName(courseDTO.name());
+                    recordFound.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
+                    recordFound.getLessons().clear();
+                    course.getLessons().forEach(recordFound.getLessons()::add);
+                    return courseMapper.toDTO(courseRepository.save(recordFound));
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
     public boolean delete(@NotNull @Positive Long id) {
         return courseRepository.findById(id)
