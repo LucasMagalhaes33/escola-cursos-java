@@ -1,6 +1,7 @@
 package com.example.escolacursosjava.controller;
 
 import com.example.escolacursosjava.dto.CourseDTO;
+import com.example.escolacursosjava.dto.CoursePageDTO;
 import com.example.escolacursosjava.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping
-    public List<CourseDTO> list() {
+    public CoursePageDTO list() {
         return courseService.list();
     }
 
