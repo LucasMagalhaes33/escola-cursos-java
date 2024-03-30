@@ -7,6 +7,7 @@ import com.example.escolacursosjava.exception.RecordNotFoundException;
 import com.example.escolacursosjava.model.Course;
 import com.example.escolacursosjava.repository.CourseRepository;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.data.domain.Page;
@@ -15,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
 
 @Validated
 @Service
@@ -28,13 +27,13 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
-    public CoursePageDTO list() {
-        Page<Course> page = courseRepository.findAll(PageRequest.of(0, 10));
-        List<CourseDTO> courses = page.get().map(courseMapper::toDTO).toList();
-        return new CoursePageDTO(courses, page.getNumber(), page.getSize(), page.getTotalElements(), page.getTotalPages());
+    public CoursePageDTO list(int page, @Positive @Max(100) int size) {
+        Page<Course> pageCourse = courseRepository.findAll(PageRequest.of(page, size));
+        List<CourseDTO> courses = pageCourse.get().map(courseMapper::toDTO).toList();
+        return new CoursePageDTO(courses, pageCourse.getNumber(), pageCourse.getSize(), pageCourse.getTotalElements(), pageCourse.getTotalPages());
     }
 
-//    public List<CourseDTO> list() {
+    //    public List<CourseDTO> list() {
 //        return courseRepository.findAll()
 //                .stream()
 //                .map(courseMapper::toDTO)
